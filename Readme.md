@@ -1,22 +1,13 @@
 # HotPatch
-A C++ library for Windows to create hotpatchable images and apply hotpatches with 5 methods
+A single-header C++ library for Windows to create hotpatchable images and apply hotpatches with 5 methods
 
 Article at CodeProject: https://www.codeproject.com/Articles/1043089/HotPatching-Deep-Inside
 
 ## Executable to be hot-patched preparation
 
 1. Build the executable in ***release*** mode from solution
-2. The solution is automatically configured to run the executable with parameter /postbuildpatch which generates a patch.xml
-3. Build the solution again, this time patch.xml should be included in the rc file for the executable (without rebuilding the sources, only the resources).
-
-You may try also with 
-
-```C++
-HOTPATCH hp;
-hp.AutoPatchExecutable({L"main.obj"});
-```
-
-which uses BeginUpdateResource and EndUpdateResource but those are buggy and are frequently stopped by antivirus. The safest method is to build the executable, run it on itself (or make a custom patch generator) then build it again.
+2. The solution is automatically configured to run the executable with parameter /postbuildpatch which updates itself with the patch information. It uses BeginUpdateResource and EndUpdateResource.
+Note that these are frequently stopped by antivirus. You can also use the included pig.exe which is a standalone app to read a file and its pdf, and put the hotpatch data inside it.
 
 ## Method 1: Using a DLL to patch an Executable 
 

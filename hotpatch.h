@@ -672,7 +672,7 @@ class HOTPATCH
 				return S_OK; 
 				}
 			 
-			HRESULT AutoPatchExecutable(std::initializer_list<wstring> Compilands = { L"" })
+			HRESULT AutoPatchExecutable(std::vector<wstring> Compilands = { L"" })
 				{
 				wchar_t my[1000] = { 0 };
 				wchar_t my2[1000] = { 0 };
@@ -698,7 +698,7 @@ class HOTPATCH
 
 
 
-		HRESULT PrepareExecutable(wchar_t* e,std::initializer_list<wstring> Compilands)
+		HRESULT PrepareExecutable(wchar_t* e,std::vector<wstring> Compilands)
 			{
 			if (!e)
 				return E_INVALIDARG;
@@ -708,7 +708,7 @@ class HOTPATCH
 			exe = bu.data();
 
 			HRESULT hr = E_FAIL;
-			bool AlsoVirtual = true;
+			bool AlsoVirtual = false;
 
 			// Create the process
 			SUSPENDEDPROCESS sp(0);
@@ -728,10 +728,11 @@ class HOTPATCH
 			if (FAILED(hr))
 				return hr;
 
-			hr = pSource->loadDataFromPdb(e);
+			hr = pSource->loadDataForExe(e, NULL, NULL);
+
 			if (FAILED(hr))
 				{
-				hr = pSource->loadDataForExe(e, NULL, NULL);
+				hr = pSource->loadDataFromPdb(e);
 				if (FAILED(hr))
 					return E_FAIL;
 				}

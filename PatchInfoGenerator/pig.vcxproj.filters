@@ -9,20 +9,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Resources">
-      <UniqueIdentifier>{c2cab89e-12fd-4a95-8364-c5b9b3cb8b00}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Code">
       <UniqueIdentifier>{f39967f6-f5d7-4585-8037-d7a7d3d33408}</UniqueIdentifier>
     </Filter>
     <Filter Include="Other Files">
       <UniqueIdentifier>{435b2f8d-e902-4b8e-b685-a57a9f790d9c}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="main.rc">
-      <Filter>Resources</Filter>
-    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

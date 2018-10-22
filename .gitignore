@@ -266,3 +266,5 @@ __pycache__/
 *.exe
 *.dll
 *.res
+/Method1/exe/test.exe.prepatch
+/Method1/exe/test.exe.afterpatch
