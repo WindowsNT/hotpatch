@@ -263,17 +263,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
-/test/test.exe
-/hello2.p7s
-/hello2.p7m
-/hello2.xml
-/2.xml
-/3.xml
-/old.cpp
-/hello2.asics
-/hello.p7m
-/hello.p7s
-/1.p12
-/hello2.asice
-/Windows
-/hello2.pdf
+*.exe
+*.dll
+*.res

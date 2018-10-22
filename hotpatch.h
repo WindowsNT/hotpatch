@@ -4,7 +4,8 @@
 #include <vector>
 #include <memory>
 #include <DbgHelp.h>
-#include "dia2.h"
+#include "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\DIA SDK\include\dia2.h"
+
 #include <psapi.h>
 #include <sstream>
 #include <thread>
@@ -14,9 +15,10 @@
 
 
 #ifdef _WIN64
-#pragma comment(lib,"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\DIA SDK\\lib\\amd64\\diaguids.lib")
+#pragma comment(lib,"C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\DIA SDK\\lib\\amd64\\diaguids.lib")
+
 #else
-#pragma comment(lib,"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\DIA SDK\\lib\\diaguids.lib")
+#pragma comment(lib,"C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\DIA SDK\\lib\\diaguids.lib")
 #endif
 #pragma comment(lib,"psapi.lib")
 #pragma comment(lib,"dbghelp.lib")
@@ -86,7 +88,7 @@ struct IATRESULTS
 
 
 #endif // HOTPATCH_NO_INTEROP
-#include "xml3all.h"
+#include "xml\\xml3all.h"
 using namespace XML3;
 
 struct HPFUNCTION
@@ -356,6 +358,7 @@ class HOTPATCH
 			void* mu = 0;
 			};
 
+		string getser() { return ser; }
 
 	private:
 
@@ -666,25 +669,30 @@ class HOTPATCH
 				fx = EndUpdateResource(hX, false);
 				if (!fx)
 					return E_FAIL;
-				return S_OK;
+				return S_OK; 
 				}
-
+			 
 			HRESULT AutoPatchExecutable(std::initializer_list<wstring> Compilands = { L"" })
 				{
 				wchar_t my[1000] = { 0 };
 				wchar_t my2[1000] = { 0 };
+				wchar_t my3[1000] = { 0 };
 				GetModuleFileName(0, my, 1000);
 				swprintf_s(my2, 1000, L"%s.prepatch", my);
+				swprintf_s(my3, 1000, L"%s.afterpatch", my);
 				if (!MoveFileEx(my, my2, MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
 					return E_FAIL;
-				if (!CopyFile(my2, my, FALSE))
+				if (!CopyFile(my2, my3, FALSE))
 					return E_FAIL;
-				HRESULT hr = PrepareExecutable(my, Compilands);
+				HRESULT hr = PrepareExecutable(my3, Compilands);
 				if (FAILED(hr))
 					return E_FAIL;
 				hr = PatchExecutable();
+				if (!CopyFile(my3, my, FALSE))
+					return E_FAIL;
 				if (FAILED(hr))
 					return E_FAIL;
+
 				return S_OK;
 				}
 
@@ -1016,9 +1024,6 @@ HRESULT HOTPATCH::ApplyPatchFor(HMODULE hM,const wchar_t* funcname,void* nf, XML
 
 HRESULT ApplyPatchForDirect(void*of, void* nf)
 	{
-	int a[10];
-	a[1] = 0;
-	1[a] = 3;
 
 	if (!of || !nf)
 		return E_INVALIDARG;

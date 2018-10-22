@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="stdafx.cpp">
       <Filter>Code</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="dllmain.cpp">
       <Filter>Code</Filter>
     </ClCompile>
   </ItemGroup>
@@ -28,10 +28,5 @@
     <ClInclude Include="stdafx.h">
       <Filter>Other Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="patch.xml">
-      <Filter>Resources</Filter>
-    </Xml>
   </ItemGroup>
 </Project>
