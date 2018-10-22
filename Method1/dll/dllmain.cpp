@@ -38,7 +38,7 @@ __declspec(noinline) void PatchableFunction4X2()
 
 FARPROC OldMsgBox;
 
-__declspec(noinline) UINT __stdcall NewMessageBox(HWND hh, LPCWSTR mm, LPCWSTR ww, UINT ll)
+__declspec(noinline) UINT __stdcall NewMessageBox(HWND hh, LPCWSTR mm, LPCWSTR , UINT ll)
 {
 	auto boo = MessageBox;
 	unsigned long long a = (unsigned long long)boo;
@@ -53,7 +53,7 @@ extern "C" HRESULT __stdcall Patch()
 	HRESULT hr = 0;
 
 	auto l = LoadLibrary(L"USER32.DLL");
-	int* f = (int*)GetProcAddress(l, "MessageBoxW");
+//	int* f = (int*)GetProcAddress(l, "MessageBoxW");
 	//hr = hp.ApplyPatchForDirect(f, NewMessageBox);
 
 	hr = hp.ApplyPatchFor(hM, L"FOO::PatchableFunction1", PatchableFunction1, &xPatch);
