@@ -400,11 +400,6 @@ class HOTPATCH
 			return S_OK;
 			}
 
-
-
-
-
-
 		HRESULT HOTPATCH::Unregister(HKEY root)
 			{
 			TCHAR cidx[1000] = { 0 };

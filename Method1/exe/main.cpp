@@ -53,25 +53,7 @@ HRESULT PostBuildPatchExecutable()
 	GetModuleFileName(0, my, 1000);
 	auto hr = hp.AutoPatchExecutable({ L"main.obj" });
 	if (FAILED(hr))
-	{
-		hr = hp.PrepareExecutable(my, { L"main.obj" });
-		if (FAILED(hr))
-		{
-			MessageBox(0, L"Executable post-patching failed.", 0, 0);
-			return E_FAIL;
-		}
-		FILE* fw = 0;
-		_wfopen_s(&fw, L"patch.xml", L"wb");
-		if (!fw)
-		{
-			MessageBox(0, L"Executable post-patching failed.", 0, 0);
-			return E_FAIL;
-		}
-		auto s = hp.getser();
-		fwrite(s.data(), 1, s.size(), fw);
-		fclose(fw);
-		return S_OK;
-	}
+		MessageBox(0, L"Executable post-patching failed.", 0, 0);
 	return hr;
 }
 

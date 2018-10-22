@@ -16,7 +16,69 @@ Note that these are frequently stopped by antivirus. You can also use the includ
 
 
 ```C++
-	hr = hp.ApplyPatchFor(hM, L"FOO::PatchableFunction1", PatchableFunction1, &xPatch);
+hr = hp.ApplyPatchFor(hM, L"FOO::PatchableFunction1", PatchableFunction1, &xPatch);
+```
+
+## Method 2: Using the same executable as a COM server (currently x86 only)
+
+1. Call hp.PrepareExecutableForCOMPatching();
+2. If embedding, start the COM server, specifying the patches and installing a message loop:
+
+```C++
+
+void EmbeddingStart()
+{
+	hp.StartCOMServer(GUID_TEST, [](vector<HOTPATCH::NAMEANDPOINTER>& w) -> HRESULT
+	{
+		w.clear();
+		HOTPATCH::NAMEANDPOINTER nap;
+		nap.n = L"PatchableFunction1";
+		nap.f = [](size_t*) -> size_t
+		{
+			MessageBox(0, L"Patch from COM Patcher", L"Patched", MB_ICONINFORMATION);
+			return 0;
+		};
+		w.push_back(nap);
+		return S_OK;
+	},
+
+	[]()
+	{
+		// We are closing...
+		PostThreadMessage(mtid, WM_QUIT, 0, 0);
+	}
+	);
+}
+
+// main
+if (argc == 2 && (_wcsicmp(wargv[1], L"-embedding") == 0 || _wcsicmp(wargv[1], L"/embedding") == 0))
+{
+	mtid = GetCurrentThreadId();
+	EmbeddingStart();
+	MSG msg;
+	while (GetMessage(&msg, 0, 0, 0))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+	return 0;
+}
+	
+```
+
+If main, start the patching process
+
+```C++
+hp.StartCOMPatching();
+vector<wstring> pns;
+hp.AckGetPatchNames(pns);
+for (auto& aa : pns)
+{
+	hp.ApplyCOMPatchFor(xPatch, GetModuleHandle(0), aa.c_str());
+}
+...
+// End app
+hp.FinishCOMPatching();
 ```
 
 More methods to follow. The article already explains them, stay alert.
