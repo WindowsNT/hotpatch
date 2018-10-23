@@ -847,6 +847,12 @@ struct COMCALL
 	unsigned long movd2 = 0;
 	unsigned long regaddr = 0;
 #else
+
+	unsigned char pushebp = 0x55;
+	unsigned char movebpesp_1 = 0x89;
+	unsigned char movebpesp_2 = 0xe5;
+
+
 	unsigned char movecx = 0xB9;
 	unsigned long regaddr = 0;
 	// Give the callee some stack to work with
@@ -864,6 +870,7 @@ struct COMCALL
 	unsigned short addesp100_2 = 0x0100;
 	unsigned short addesp100_3 = 0x0000;
 #endif
+	unsigned char popebp = 0x5d;
 	unsigned char ret = 0xC3;
 #endif // WIN64
 
