@@ -170,9 +170,12 @@ hp.FinishCOMPatching();
 This method is based on my article at https://www.codeproject.com/Articles/1045674/Load-EXE-as-DLL-Mission-Possible , which describes how to load an EXE as a DLL.
 However this is a highly hackish method and should not be used.
 
+## Method 5 : Self-DLL
+
+The final method requires your app to be build itself as DLL. Therefore, the post-build event is now  *rundll32 .\test.dll,PostBuildPatch*, the debugger run command is now *rundll32 .\test.dll,dmain*
+and you can have the program and the patcher inside the same DLL.
 
 
-More methods to follow. The article already explains them, stay alert.
 
 
 
