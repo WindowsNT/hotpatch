@@ -767,11 +767,11 @@ struct COMCALL
 	IDispatch* HPPointer = 0;
 	void* HPClass = 0;
 #ifdef _WIN64
-	char data[179];
+	char data[179] = { 0 };
 #else
-	char data[187];
+	char data[187] = { 0 };
 #endif
-	char name[100];
+	char name[100] = { 0 };
 
 	// Push pop to stack
 #ifdef _WIN64
@@ -816,11 +816,16 @@ struct COMCALL
 	unsigned short movd2x = 0xA348;
 	unsigned long long movd2 = 0;
 #else
+	unsigned char pushrbp = 0x55;
+	unsigned char movrbprsp_1 = 0x48;
+	unsigned char movrbprsp_2 = 0x89;
+	unsigned char movrbprsp_3 = 0xe5;
+
 	unsigned short movrcx = 0xB948;
 	unsigned long long regaddr = 0;
 	unsigned short subrsp100_1 = 0x8148;
 	unsigned short subrsp100_2 = 0x00EC;
-	unsigned short subrsp100_3 = 0x0001;
+	unsigned short subrsp100_3 = 0x0002;
 	unsigned char subrsp100_4 = 0;
 #endif // XCXCALL
 	unsigned short movrax = 0xB848;
@@ -830,9 +835,10 @@ struct COMCALL
 	// Restore the stack
 	unsigned short addrsp100_1 = 0x8148;
 	unsigned short addrsp100_2 = 0x00C4;
-	unsigned short addrsp100_3 = 0x0001;
+	unsigned short addrsp100_3 = 0x0002;
 	unsigned char addrsp100_4 = 0;
 #endif
+	unsigned char poprbp = 0x5d;
 	unsigned char ret = 0xC3;
 #else
 				  // Call the COMPatchGeneric
@@ -913,7 +919,7 @@ void __fastcall COMPatchGeneric(size_t dx)
 		memcpy(&aa, cc->data + (i * sizeof(size_t)), sizeof(aa));
 		a.SetAt(i, aa);
 		}
-
+	
 
 //	d->Call(_bstr_t((wchar_t*)cc->name), a);
 
@@ -926,6 +932,7 @@ void __fastcall COMPatchGeneric(size_t dx)
 	v[1].bstrVal = b1;
 	v[1].vt = VT_BSTR;
 	dp.rgvarg = v;
+	
 
 	d->Invoke(DISPID_CALL, IID_NULL, 0, 0, &dp, 0, 0, 0);
 	SysFreeString(b1);
@@ -989,6 +996,7 @@ class HOTPATCH
 			};
 
 		string getser() { return ser; }
+		CComPtr<IDispatch> getrm() { return RemoteInterface; }
 
 	private:
 
@@ -1695,6 +1703,7 @@ HRESULT ApplyPatchForDirect(void*of, void* nf)
 
 			VirtualAllocPointers.push_back(px);
 
+
 			COMCALL* cc = new (px)COMCALL(RemoteInterface.operator IDispatch *(), this, (size_t)&COMPatchGeneric, funcname);
 			return ApplyPatchFor(hm, funcname, cc,&xPatch);
 			}
@@ -2065,7 +2074,8 @@ public:
 	HRESULT _stdcall Invoke(DISPID d, REFIID, LCID, WORD flg, DISPPARAMS* p, VARIANT FAR* res, EXCEPINFO FAR* e, unsigned int FAR* a)
 	{
 	// Check DISPIDs
-	if (d == DISPID_GETNAMES)
+	//	MessageBox(0, 0, 0, 0);
+		if (d == DISPID_GETNAMES)
 		{
 		// One param BSTR
 		if (p->cArgs != 1) return E_INVALIDARG;

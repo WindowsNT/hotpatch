@@ -19,7 +19,7 @@ Note that these are frequently stopped by antivirus. You can also use the includ
 hr = hp.ApplyPatchFor(hM, L"FOO::PatchableFunction1", PatchableFunction1, &xPatch);
 ```
 
-## Method 2: Using the same executable as a COM server (currently x86 only)
+## Method 2: Using the same executable as a COM server
 
 1. Call hp.PrepareExecutableForCOMPatching();
 2. If embedding, start the COM server, specifying the patches and installing a message loop:
