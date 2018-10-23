@@ -1312,12 +1312,12 @@ class HOTPATCH
 				return S_OK; 
 				}
 			 
-			HRESULT AutoPatchExecutable(std::vector<wstring> Compilands = { L"" })
+			HRESULT AutoPatchExecutable(std::vector<wstring> Compilands = { L"" },HMODULE hm = 0)
 				{
 				wchar_t my[1000] = { 0 };
 				wchar_t my2[1000] = { 0 };
 				wchar_t my3[1000] = { 0 };
-				GetModuleFileName(0, my, 1000);
+				GetModuleFileName(hm, my, 1000);
 				swprintf_s(my2, 1000, L"%s.prepatch", my);
 				swprintf_s(my3, 1000, L"%s.afterpatch", my);
 				if (!MoveFileEx(my, my2, MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
