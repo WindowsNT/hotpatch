@@ -165,6 +165,13 @@ for (size_t i = 0; i < pns.size(); i++)
 hp.FinishCOMPatching();
 ```
 
+## Method 4 : Self-EXE
+
+This method is based on my article at https://www.codeproject.com/Articles/1045674/Load-EXE-as-DLL-Mission-Possible , which describes how to load an EXE as a DLL.
+However this is a highly hackish method and should not be used.
+
+
+
 More methods to follow. The article already explains them, stay alert.
 
 
