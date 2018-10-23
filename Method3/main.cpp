@@ -22,7 +22,7 @@ void USMStart()
 	hp.StartUSMServer(GUID_TEST, [](vector<HOTPATCH::NAMEANDPOINTER>& w) -> HRESULT
 	{
 		HOTPATCH::NAMEANDPOINTER nap;
-		nap.n = L"FOO::PatchableFunction1";
+		nap.n = L"PatchableFunction1";
 
 		TCHAR cidx[1000] = { 0 };
 		StringFromGUID2(GUID_TEST, cidx, 1000);
@@ -93,7 +93,7 @@ int wmain(int argc,wchar_t** wargv)
 	// Do the hotpatching now...
 
 	wcscat_s(a, 1000, L" /usm");
-	// Run it with /USMPATCH
+	// Run it with /USM
 	STARTUPINFO sInfo = { 0 };
 	sInfo.cb = sizeof(sInfo);
 	PROCESS_INFORMATION pi = { 0 };
